@@ -131,202 +131,201 @@ export function ExperimentResults({ experimentTitle, onBack }: ExperimentResults
   )
 
   return (
-    <div className="space-y-4 sm:space-y-6">
-      <Card className="border-0 shadow-sm">
-        <CardHeader className="px-4 sm:px-6 py-4 sm:py-6">
-          <CardTitle className="text-lg sm:text-xl">Experiment: {experimentTitle}</CardTitle>
-          <CardDescription className="text-sm sm:text-base">
-            Run experiments across different LLM configurations and prompt versions, then evaluate results
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
-          {/* Experiment Overview */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
-            <Card className="p-3 sm:p-4 hover:shadow-sm transition-shadow">
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center gap-2 text-muted-foreground">
-                  <Target className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
-                  <span className="text-xs sm:text-sm">Total</span>
-                </div>
-                <div>
-                  <p className="text-xl sm:text-2xl font-bold">{experiments.length}</p>
-                  <p className="text-xs sm:text-sm text-muted-foreground">Experiments</p>
-                </div>
-              </div>
-            </Card>
-            <Card className="p-3 sm:p-4 hover:shadow-sm transition-shadow">
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center gap-2 text-green-600">
-                  <BarChart3 className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
-                  <span className="text-xs sm:text-sm">Completed</span>
-                </div>
-                <div>
-                  <p className="text-xl sm:text-2xl font-bold">{completedExperiments.length}</p>
-                  <p className="text-xs sm:text-sm text-muted-foreground">Results</p>
-                </div>
-              </div>
-            </Card>
-            <Card className="p-3 sm:p-4 hover:shadow-sm transition-shadow">
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center gap-2 text-blue-600">
-                  <Clock className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
-                  <span className="text-xs sm:text-sm">Avg Latency</span>
-                </div>
-                <div>
-                  <p className="text-xl sm:text-2xl font-bold">
-                    {completedExperiments.length > 0
-                      ? Math.round(
-                          completedExperiments.reduce((sum, exp) => sum + (exp.results?.avgLatency || 0), 0) /
-                            completedExperiments.length,
-                        )
-                      : 0}
-                    s
-                  </p>
-                  <p className="text-xs sm:text-sm text-muted-foreground">average</p>
-                </div>
-              </div>
-            </Card>
-            <Card className="p-3 sm:p-4 hover:shadow-sm transition-shadow">
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center gap-2 text-purple-600">
-                  <Zap className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
-                  <span className="text-xs sm:text-sm">Best Score</span>
-                </div>
-                <div>
-                  <p className="text-xl sm:text-2xl font-bold">
-                    {bestExperiment?.results ? bestExperiment.results.avgEvalScore.toFixed(1) : "N/A"}
-                  </p>
-                  <p className="text-xs sm:text-sm text-muted-foreground">performance</p>
-                </div>
-              </div>
-            </Card>
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="space-y-2">
+        <h2 className="text-2xl font-semibold text-foreground">Run Experiments</h2>
+        <p className="text-muted-foreground font-light">{experimentTitle}</p>
+      </div>
+
+      {/* Experiment Overview Stats */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="p-4 border border-border/40 rounded-lg bg-background hover:bg-muted/30 transition-colors">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <Target className="h-4 w-4" />
+              <span className="text-xs font-medium">Total</span>
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-foreground">{experiments.length}</p>
+            </div>
           </div>
+        </div>
+        <div className="p-4 border border-border/40 rounded-lg bg-background hover:bg-muted/30 transition-colors">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 text-green-600">
+              <BarChart3 className="h-4 w-4" />
+              <span className="text-xs font-medium">Completed</span>
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-foreground">{completedExperiments.length}</p>
+            </div>
+          </div>
+        </div>
+        <div className="p-4 border border-border/40 rounded-lg bg-background hover:bg-muted/30 transition-colors">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 text-blue-600">
+              <Clock className="h-4 w-4" />
+              <span className="text-xs font-medium">Avg Latency</span>
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-foreground">
+                {completedExperiments.length > 0
+                  ? Math.round(
+                      completedExperiments.reduce((sum, exp) => sum + (exp.results?.avgLatency || 0), 0) /
+                        completedExperiments.length,
+                    )
+                  : 0}
+                s
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="p-4 border border-border/40 rounded-lg bg-background hover:bg-muted/30 transition-colors">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 text-primary">
+              <Zap className="h-4 w-4" />
+              <span className="text-xs font-medium">Best Score</span>
+            </div>
+            <div>
+              <p className="text-2xl font-bold text-foreground">
+                {bestExperiment?.results ? bestExperiment.results.avgEvalScore.toFixed(1) : "—"}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <Card className="border-0 bg-white shadow-[0_1px_3px_rgba(0,0,0,0.05)]">
+        <CardContent className="p-6 sm:p-8 space-y-6">
+          {/* Experiment Overview */}
 
           {/* Evaluation Setup */}
-          <Card className="border-dashed border-2">
-            <CardHeader className="px-4 sm:px-6 py-3 sm:py-4 pb-2 sm:pb-3">
-              <CardTitle className="text-base sm:text-lg">Evaluation Setup</CardTitle>
-              <CardDescription className="text-xs sm:text-sm">Configure how you want to evaluate the experiment results</CardDescription>
-            </CardHeader>
-            <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Evaluation Type</label>
-                  <Select value={evalType} onValueChange={setEvalType}>
-                    <SelectTrigger className="h-10 sm:h-11">
-                      <SelectValue placeholder="Select evaluation type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="output-based">Output Based</SelectItem>
-                      <SelectItem value="orchestration">Orchestration</SelectItem>
-                      <SelectItem value="tool-selection">Tool Selection</SelectItem>
-                      <SelectItem value="context-coherence">Memory/Context Coherence</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Evaluation Method</label>
-                  <Select value={evalMethod} onValueChange={setEvalMethod}>
-                    <SelectTrigger className="h-10 sm:h-11">
-                      <SelectValue placeholder="Select evaluation method" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="manual">Manual Human Scoring</SelectItem>
-                      <SelectItem value="llm-judge">LLM as a Judge</SelectItem>
-                      <SelectItem value="conditional">Basic Conditional Scoring</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+          <div className="space-y-3">
+            <h3 className="font-semibold text-foreground">Evaluation Setup</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Type</label>
+                <Select value={evalType} onValueChange={setEvalType}>
+                  <SelectTrigger className="h-11 border-border/40 rounded-lg bg-muted/30 focus:bg-white transition-colors">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="output-based">Output Based</SelectItem>
+                    <SelectItem value="orchestration">Orchestration</SelectItem>
+                    <SelectItem value="tool-selection">Tool Selection</SelectItem>
+                    <SelectItem value="context-coherence">Memory/Context Coherence</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
-            </CardContent>
-          </Card>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Method</label>
+                <Select value={evalMethod} onValueChange={setEvalMethod}>
+                  <SelectTrigger className="h-11 border-border/40 rounded-lg bg-muted/30 focus:bg-white transition-colors">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="manual">Manual Human Scoring</SelectItem>
+                    <SelectItem value="llm-judge">LLM as a Judge</SelectItem>
+                    <SelectItem value="conditional">Basic Conditional Scoring</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </div>
 
           {/* Experiment List */}
-          <div className="space-y-3 sm:space-y-4">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
-              <h3 className="text-base sm:text-lg font-semibold">Experiment Combinations</h3>
-              <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-                <Button variant="outline" size="sm" className="h-9 text-xs sm:text-sm bg-transparent">
+          <div className="space-y-4 pt-4 border-t border-border/40">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div>
+                <h3 className="font-semibold text-foreground">Experiment Combinations</h3>
+                <p className="text-xs text-muted-foreground mt-1 font-light">{experiments.length} total combinations</p>
+              </div>
+              <div className="flex gap-2 w-full sm:w-auto">
+                <Button variant="outline" size="sm" className="h-10 text-xs border-border/40 hover:bg-muted/50 flex-1 sm:flex-none bg-transparent">
                   <Download className="h-4 w-4 mr-2" />
-                  Export Results
+                  Export
                 </Button>
-                <Button onClick={runExperiments} disabled={isRunning} size="sm" className="h-9 text-xs sm:text-sm">
+                <Button onClick={runExperiments} disabled={isRunning} size="sm" className="h-10 text-xs bg-primary hover:bg-primary/90 flex-1 sm:flex-none">
                   <Play className="h-4 w-4 mr-2" />
-                  {isRunning ? "Running..." : "Run All Experiments"}
+                  {isRunning ? "Running..." : "Run"}
                 </Button>
               </div>
             </div>
 
-            <div className="space-y-2 sm:space-y-3">
+            <div className="space-y-2">
               {experiments.map((experiment) => (
-                <Card key={experiment.id} className="p-3 sm:p-4 hover:shadow-sm transition-shadow">
-                  <div className="space-y-2 sm:space-y-3">
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4">
-                      <div className="space-y-1.5 min-w-0 flex-1">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <Badge variant="secondary" className="text-xs sm:text-sm truncate">{experiment.configVersion}</Badge>
-                          <Badge variant="outline" className="text-xs sm:text-sm">{experiment.promptVersion}</Badge>
-                        </div>
-                        <div className="flex items-center gap-2">
+                <div key={experiment.id} className="p-4 border border-border/40 rounded-lg bg-background hover:bg-muted/20 transition-colors group">
+                  <div className="space-y-3">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex flex-wrap items-center gap-2 mb-2">
+                          <Badge variant="secondary" className="text-xs">{experiment.configVersion}</Badge>
+                          <Badge variant="outline" className="text-xs">{experiment.promptVersion}</Badge>
                           <div className={`w-2 h-2 rounded-full ${getStatusColor(experiment.status)}`} />
-                          <span className="text-xs sm:text-sm capitalize">{experiment.status}</span>
+                          <span className="text-xs font-medium capitalize text-muted-foreground">{experiment.status}</span>
                         </div>
+                        {experiment.results && (
+                          <p className="text-xs text-muted-foreground">
+                            Score: <span className="font-mono font-semibold text-foreground">{experiment.results.avgEvalScore.toFixed(1)}</span>
+                          </p>
+                        )}
                       </div>
                       {experiment.results && (
                         <div className="text-right flex-shrink-0">
-                          <p className="text-lg sm:text-xl font-semibold">{experiment.results.avgEvalScore.toFixed(1)}</p>
-                          <p className="text-xs text-muted-foreground">Eval Score</p>
+                          <p className="text-lg font-bold text-primary">{experiment.results.avgEvalScore.toFixed(1)}</p>
                         </div>
                       )}
                     </div>
 
                     {experiment.status === "running" && (
-                      <div className="space-y-1.5">
-                        <div className="flex justify-between text-xs sm:text-sm">
+                      <div className="space-y-1">
+                        <div className="flex justify-between text-xs">
                           <span>Progress</span>
-                          <span>{experiment.progress}%</span>
+                          <span className="font-mono">{experiment.progress}%</span>
                         </div>
-                        <Progress value={experiment.progress} className="h-2" />
+                        <Progress value={experiment.progress} className="h-1.5" />
                       </div>
                     )}
 
                     {experiment.results && (
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 text-xs sm:text-sm">
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs pt-2 border-t border-border/40">
                         <div>
-                          <p className="text-muted-foreground">TTFT</p>
-                          <p className="font-medium">{experiment.results.avgTTFT}s</p>
+                          <p className="text-muted-foreground font-medium">TTFT</p>
+                          <p className="font-mono">{experiment.results.avgTTFT}s</p>
                         </div>
                         <div>
-                          <p className="text-muted-foreground">Latency</p>
-                          <p className="font-medium">{experiment.results.avgLatency}s</p>
+                          <p className="text-muted-foreground font-medium">Latency</p>
+                          <p className="font-mono">{experiment.results.avgLatency}s</p>
                         </div>
                         <div>
-                          <p className="text-muted-foreground">Success Rate</p>
-                          <p className="font-medium">{experiment.results.successRate}%</p>
+                          <p className="text-muted-foreground font-medium">Success</p>
+                          <p className="font-mono">{experiment.results.successRate}%</p>
                         </div>
                         <div>
-                          <p className="text-muted-foreground">Responses</p>
-                          <p className="font-medium">{experiment.results.totalResponses}</p>
+                          <p className="text-muted-foreground font-medium">Responses</p>
+                          <p className="font-mono">{experiment.results.totalResponses}</p>
                         </div>
                       </div>
                     )}
                   </div>
-                </Card>
+                </div>
               ))}
             </div>
           </div>
-
-          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-between pt-2 sm:pt-4">
-            <Button variant="outline" onClick={onBack} className="h-10 sm:h-11 order-2 sm:order-1 bg-transparent">
-              Back
-            </Button>
-            <Button disabled={completedExperiments.length === 0} className="h-10 sm:h-11 order-1 sm:order-2">
-              View Detailed Analysis ({completedExperiments.length} completed)
-            </Button>
-          </div>
         </CardContent>
       </Card>
+
+      {/* Actions */}
+      <div className="flex flex-col-reverse sm:flex-row gap-3 justify-between">
+        <Button variant="outline" onClick={onBack} className="h-11 border-border/40 hover:bg-muted/50 font-medium bg-transparent">
+          Back
+        </Button>
+        <Button disabled={completedExperiments.length === 0} className="h-11 bg-primary hover:bg-primary/90 font-medium">
+          View Analysis
+        </Button>
+      </div>
     </div>
   )
 }

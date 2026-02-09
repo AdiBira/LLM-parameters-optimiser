@@ -69,86 +69,108 @@ export function DatasetUpload({ onComplete, onBack }: DatasetUploadProps) {
   }
 
   return (
-    <Card className="border-0 shadow-sm">
-      <CardHeader className="px-4 sm:px-6 py-4 sm:py-6">
-        <CardTitle className="text-lg sm:text-xl">Upload Dataset</CardTitle>
-        <CardDescription className="text-sm sm:text-base">
-          Upload a CSV, JSON, or Excel file containing input prompts for your experiments
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
-        {!uploadedFile ? (
-          <div
-            {...getRootProps()}
-            className={cn(
-              "border-2 border-dashed rounded-xl p-6 sm:p-8 text-center cursor-pointer transition-all duration-200",
-              isDragActive ? "border-primary bg-primary/5 scale-[1.02]" : "border-border hover:border-primary/50 hover:bg-muted/30",
-            )}
-          >
-            <input {...getInputProps()} />
-            <div className="flex flex-col items-center gap-3 sm:gap-4">
-              <div className="p-2 sm:p-3 rounded-full bg-muted">
-                <Upload className="h-6 w-6 sm:h-8 sm:w-8 text-muted-foreground" />
-              </div>
-              <div>
-                <p className="text-base sm:text-lg font-semibold text-foreground">
-                  {isDragActive ? "Drop your file here" : "Drag & drop your dataset"}
-                </p>
-                <p className="text-xs sm:text-sm text-muted-foreground mt-1">or click to browse files (CSV, JSON, XLSX, XLS)</p>
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="space-y-2">
+        <h2 className="text-2xl font-semibold text-foreground">Upload Dataset</h2>
+        <p className="text-muted-foreground font-light">Add your dataset to begin experiments</p>
+      </div>
+
+      {/* Main Content */}
+      <Card className="border-0 bg-white shadow-[0_1px_3px_rgba(0,0,0,0.05)]">
+        <CardContent className="p-0">
+          {!uploadedFile ? (
+            <div
+              {...getRootProps()}
+              className={cn(
+                "border-2 border-dashed rounded-2xl p-8 sm:p-12 text-center cursor-pointer transition-all duration-300 relative overflow-hidden",
+                isDragActive 
+                  ? "border-primary bg-primary/3 scale-[1.01]" 
+                  : "border-border/60 hover:border-primary/60 hover:bg-muted/20",
+              )}
+            >
+              <input {...getInputProps()} />
+              <div className="flex flex-col items-center gap-4">
+                <div className="p-3 rounded-xl bg-muted/50">
+                  <Upload className="h-7 w-7 text-muted-foreground" />
+                </div>
+                <div>
+                  <p className="text-lg font-medium text-foreground">
+                    {isDragActive ? "Release to upload" : "Drag & drop your dataset"}
+                  </p>
+                  <p className="text-sm text-muted-foreground mt-2 font-light">
+                    CSV, JSON, XLSX, XLS — {`<100MB`}
+                  </p>
+                </div>
+                <button className="px-4 py-2 text-sm font-medium text-primary hover:bg-primary/5 rounded-lg transition-colors">
+                  or browse
+                </button>
               </div>
             </div>
-          </div>
-        ) : (
-          <div className="space-y-3 sm:space-y-4">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3 sm:p-4 border rounded-lg bg-muted/30">
-              <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-                <div className="flex-shrink-0">
-                  <FileText className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
+          ) : (
+            <div className="p-6 sm:p-8 space-y-4">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 border border-border/40 rounded-xl bg-muted/20 hover:bg-muted/30 transition-colors">
+                <div className="flex items-center gap-3 min-w-0 flex-1">
+                  <div className="flex-shrink-0 p-2 rounded-lg bg-primary/10">
+                    <FileText className="h-5 w-5 text-primary" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="font-medium text-sm truncate">{uploadedFile.name}</p>
+                    <p className="text-xs text-muted-foreground">{formatFileSize(uploadedFile.size)}</p>
+                  </div>
                 </div>
-                <div className="min-w-0">
-                  <p className="font-medium text-sm sm:text-base truncate">{uploadedFile.name}</p>
-                  <p className="text-xs sm:text-sm text-muted-foreground">{formatFileSize(uploadedFile.size)}</p>
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  <div className="flex items-center gap-1 px-2 py-1 bg-green-50 rounded-lg">
+                    <CheckCircle className="h-4 w-4 text-green-600" />
+                    <span className="text-xs font-medium text-green-700">Ready</span>
+                  </div>
+                  <Button variant="ghost" size="sm" onClick={() => setUploadedFile(null)} className="h-8 w-8 text-muted-foreground hover:text-foreground">
+                    <X className="h-4 w-4" />
+                  </Button>
                 </div>
               </div>
-              <div className="flex items-center gap-1 flex-shrink-0">
-                <CheckCircle className="h-5 w-5 text-green-600" />
-                <Button variant="ghost" size="sm" onClick={() => setUploadedFile(null)} className="h-8 w-8 sm:h-9 sm:w-9">
-                  <X className="h-4 w-4" />
-                </Button>
+
+              {uploadedFile.preview && (
+                <div className="space-y-3">
+                  <Label className="text-sm font-medium">Preview</Label>
+                  <div className="border border-border/40 rounded-xl p-4 bg-muted/20 overflow-x-auto">
+                    <pre className="text-xs text-muted-foreground font-mono whitespace-pre-wrap break-words">
+                      {uploadedFile.preview.join("\n")}
+                    </pre>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {isProcessing && (
+            <div className="p-8 sm:p-12 flex items-center justify-center">
+              <div className="flex items-center gap-3">
+                <div className="animate-spin rounded-full h-5 w-5 border-2 border-primary border-t-transparent"></div>
+                <span className="text-sm text-muted-foreground font-light">Processing...</span>
               </div>
             </div>
+          )}
+        </CardContent>
+      </Card>
 
-            {uploadedFile.preview && (
-              <div className="space-y-2">
-                <Label className="text-sm font-medium">Dataset Preview</Label>
-                <div className="border rounded-lg p-3 sm:p-4 bg-muted/50 overflow-x-auto">
-                  <pre className="text-xs sm:text-sm text-muted-foreground whitespace-pre-wrap break-words">
-                    {uploadedFile.preview.join("\n")}
-                  </pre>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-
-        {isProcessing && (
-          <div className="flex items-center justify-center p-6 sm:p-8">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="animate-spin rounded-full h-5 w-5 sm:h-6 sm:w-6 border-2 border-primary border-t-transparent"></div>
-              <span className="text-xs sm:text-sm text-muted-foreground">Processing file...</span>
-            </div>
-          </div>
-        )}
-
-        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-between pt-2 sm:pt-4">
-          <Button variant="outline" onClick={onBack} className="h-10 sm:h-11 bg-transparent">
-            Back
-          </Button>
-          <Button onClick={onComplete} disabled={!uploadedFile || isProcessing} className="h-10 sm:h-11">
-            Continue to LLM Configuration
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
+      {/* Actions */}
+      <div className="flex flex-col-reverse sm:flex-row gap-3 justify-between">
+        <Button 
+          variant="outline" 
+          onClick={onBack} 
+          className="h-10 sm:h-11 border-border/40 hover:bg-muted/50 font-medium bg-transparent"
+        >
+          Back
+        </Button>
+        <Button 
+          onClick={onComplete} 
+          disabled={!uploadedFile || isProcessing} 
+          className="h-10 sm:h-11 bg-primary hover:bg-primary/90 font-medium"
+        >
+          Continue
+        </Button>
+      </div>
+    </div>
   )
 }

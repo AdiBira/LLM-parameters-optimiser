@@ -107,53 +107,53 @@ export function PromptManager({ onComplete, onBack }: PromptManagerProps) {
   )
 
   return (
-    <Card className="border-0 shadow-sm">
-      <CardHeader className="px-4 sm:px-6 py-4 sm:py-6">
-        <CardTitle className="text-lg sm:text-xl">Prompt Management System</CardTitle>
-        <CardDescription className="text-sm sm:text-base">Manage system and user prompts for each agent in your multi-agent system</CardDescription>
-      </CardHeader>
-      <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
-        {/* Agent Selection */}
-        <div className="space-y-2">
-          <Label className="text-sm font-medium">Select Agent</Label>
-          <Select value={selectedAgent} onValueChange={setSelectedAgent}>
-            <SelectTrigger className="h-10 sm:h-11">
-              <SelectValue placeholder="Choose an agent to configure prompts" />
-            </SelectTrigger>
-            <SelectContent>
-              {AVAILABLE_AGENTS.map((agent) => (
-                <SelectItem key={agent} value={agent}>
-                  {agent.replace("_", " ").replace(/\b\w/g, (l) => l.toUpperCase())}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="space-y-2">
+        <h2 className="text-2xl font-semibold text-foreground">Create Prompts</h2>
+        <p className="text-muted-foreground font-light">Define system and user prompts for each agent</p>
+      </div>
 
-        {selectedAgent && (
-          <Card className="border-dashed border-2">
-            <CardHeader className="px-4 sm:px-6 py-3 sm:py-4 pb-2 sm:pb-3">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
-                <CardTitle className="text-base sm:text-lg flex items-center gap-2">
-                  <MessageSquare className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
-                  Configure Prompts for {selectedAgent.replace("_", " ").replace(/\b\w/g, (l) => l.toUpperCase())}
-                </CardTitle>
+      <Card className="border-0 bg-white shadow-[0_1px_3px_rgba(0,0,0,0.05)]">
+        <CardContent className="p-6 sm:p-8 space-y-4 sm:space-y-6">
+          {/* Agent Selection */}
+          <div className="space-y-2">
+            <Label className="text-sm font-medium">Select Agent</Label>
+            <Select value={selectedAgent} onValueChange={setSelectedAgent}>
+              <SelectTrigger className="h-11 border-border/40 rounded-lg bg-muted/30 focus:bg-white transition-colors">
+                <SelectValue placeholder="Choose an agent" />
+              </SelectTrigger>
+              <SelectContent>
+                {AVAILABLE_AGENTS.map((agent) => (
+                  <SelectItem key={agent} value={agent}>
+                    {agent.replace("_", " ").replace(/\b\w/g, (l) => l.toUpperCase())}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {selectedAgent && (
+            <div className="pt-2 space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="font-semibold text-foreground">
+                  {selectedAgent.replace("_", " ").replace(/\b\w/g, (l) => l.toUpperCase())}
+                </h3>
                 {existingPrompts[selectedAgent as keyof typeof existingPrompts] && (
-                  <Button variant="outline" size="sm" onClick={() => loadExistingPrompt(selectedAgent)} className="h-9 text-xs sm:text-sm">
-                    Load Existing
+                  <Button variant="outline" size="sm" onClick={() => loadExistingPrompt(selectedAgent)} className="h-9 text-xs border-border/40">
+                    Load Previous
                   </Button>
                 )}
               </div>
-            </CardHeader>
-            <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4">
+
               {/* Version Name */}
               <div className="space-y-2">
-                <Label className="text-sm font-medium">Version Name</Label>
+                <Label className="text-sm font-medium">Version</Label>
                 <Input
-                  placeholder="e.g., planning_v14, ui_optimized_v2"
+                  placeholder="e.g., v1, optimized, with_memory"
                   value={currentPrompt.versionName}
                   onChange={(e) => setCurrentPrompt({ ...currentPrompt, versionName: e.target.value })}
-                  className="h-10 sm:h-11"
+                  className="h-11 border-border/40 rounded-lg bg-muted/30 focus:bg-white transition-colors"
                 />
               </div>
 
@@ -161,8 +161,8 @@ export function PromptManager({ onComplete, onBack }: PromptManagerProps) {
               <div className="space-y-2">
                 <Label className="text-sm font-medium">System Prompt</Label>
                 <Textarea
-                  placeholder="Define the agent's role, capabilities, and behavior..."
-                  className="min-h-[100px] sm:min-h-[120px] text-sm"
+                  placeholder="You are a helpful agent. Your role is to..."
+                  className="min-h-[100px] text-sm border-border/40 rounded-lg bg-muted/30 focus:bg-white transition-colors resize-none"
                   value={currentPrompt.systemPrompt}
                   onChange={(e) => setCurrentPrompt({ ...currentPrompt, systemPrompt: e.target.value })}
                 />
@@ -170,90 +170,82 @@ export function PromptManager({ onComplete, onBack }: PromptManagerProps) {
 
               {/* User Prompt */}
               <div className="space-y-2">
-                <Label className="text-sm font-medium">User Prompt Template</Label>
+                <Label className="text-sm font-medium">User Template</Label>
                 <Textarea
-                  placeholder="Define the user input template with variables like {task}, {context}..."
-                  className="min-h-[80px] sm:min-h-[100px] text-sm"
+                  placeholder="Task: {task}&#10;Context: {context}"
+                  className="min-h-[80px] text-sm font-mono border-border/40 rounded-lg bg-muted/30 focus:bg-white transition-colors resize-none"
                   value={currentPrompt.userPrompt}
                   onChange={(e) => setCurrentPrompt({ ...currentPrompt, userPrompt: e.target.value })}
                 />
-                <p className="text-xs text-muted-foreground">
-                  Use variables in curly braces like {"{task}"}, {"{context}"}, {"{specifications}"} for dynamic content
-                </p>
+                <p className="text-xs text-muted-foreground font-light">Use {`{variable}`} syntax for dynamic content</p>
               </div>
 
               <Button
                 onClick={savePromptVersion}
                 disabled={!currentPrompt.systemPrompt || !currentPrompt.versionName}
-                className="w-full h-10 sm:h-11 mt-2"
+                className="w-full h-11 bg-primary hover:bg-primary/90 font-medium mt-2"
               >
                 <Save className="h-4 w-4 mr-2" />
-                {editingPrompt ? "Update Prompt Version" : "Save Prompt Version"}
+                Save
               </Button>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Existing Prompt Versions */}
-        {Object.keys(groupedPrompts).length > 0 && (
-          <div className="space-y-3 sm:space-y-4 pt-2">
-            <Separator />
-            <div>
-              <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">
-                Prompt Versions ({promptVersions.length} total across {Object.keys(groupedPrompts).length} agents)
-              </h3>
-              <div className="space-y-3 sm:space-y-4">
-                {Object.entries(groupedPrompts).map(([agent, prompts]) => (
-                  <Card key={agent} className="p-3 sm:p-4 hover:shadow-sm transition-shadow">
-                    <div className="space-y-2 sm:space-y-3">
-                      <div className="flex items-center gap-2">
-                        <Badge variant="secondary" className="text-xs sm:text-sm">
-                          {agent.replace("_", " ").replace(/\b\w/g, (l) => l.toUpperCase())}
-                        </Badge>
-                        <span className="text-xs sm:text-sm text-muted-foreground">{prompts.length} versions</span>
-                      </div>
-                      <div className="space-y-2">
-                        {prompts.map((prompt) => (
-                          <div key={prompt.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 p-2 sm:p-3 border rounded-lg hover:bg-muted/30 transition-colors">
-                            <div className="space-y-1 min-w-0 flex-1">
-                              <div className="flex flex-wrap items-center gap-2">
-                                <span className="font-medium text-xs sm:text-sm truncate">{prompt.name}</span>
-                                <Badge variant="outline" className="text-xs">
-                                  v{prompt.version}
-                                </Badge>
-                              </div>
-                              <p className="text-xs text-muted-foreground line-clamp-2">
-                                {prompt.systemPrompt.substring(0, 100)}...
-                              </p>
-                            </div>
-                            <div className="flex items-center gap-1 flex-shrink-0">
-                              <Button variant="ghost" size="sm" onClick={() => editPromptVersion(prompt)} className="h-8 w-8 sm:h-9 sm:w-9">
-                                <Edit className="h-4 w-4" />
-                              </Button>
-                              <Button variant="ghost" size="sm" onClick={() => deletePromptVersion(prompt.id)} className="h-8 w-8 sm:h-9 sm:w-9">
-                                <Trash2 className="h-4 w-4" />
-                              </Button>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </Card>
-                ))}
-              </div>
             </div>
-          </div>
-        )}
+          )}
+        </CardContent>
+      </Card>
 
-        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-between pt-2 sm:pt-4">
-          <Button variant="outline" onClick={onBack} className="h-10 sm:h-11 order-2 sm:order-1 bg-transparent">
-            Back
-          </Button>
-          <Button onClick={onComplete} disabled={promptVersions.length === 0} className="h-10 sm:h-11 order-1 sm:order-2">
-            Continue to Experiment Setup ({promptVersions.length} prompt versions)
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
+      {/* Existing Prompt Versions */}
+      {Object.keys(groupedPrompts).length > 0 && (
+        <Card className="border-0 bg-muted/20">
+          <CardContent className="p-6 sm:p-8 space-y-4">
+            <div className="flex items-baseline gap-2">
+              <h3 className="text-lg font-semibold">Saved Prompts</h3>
+              <span className="text-xs font-medium px-2 py-1 rounded-lg bg-primary/10 text-primary">{promptVersions.length}</span>
+            </div>
+            <div className="space-y-3">
+              {Object.entries(groupedPrompts).map(([agent, prompts]) => (
+                <div key={agent} className="space-y-2">
+                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                    {agent.replace("_", " ").replace(/\b\w/g, (l) => l.toUpperCase())}
+                  </p>
+                  <div className="space-y-2">
+                    {prompts.map((prompt) => (
+                      <div key={prompt.id} className="flex items-center justify-between p-3 border border-border/40 rounded-lg hover:bg-background/50 transition-colors group">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="font-medium text-sm truncate">{prompt.name}</span>
+                            <Badge variant="outline" className="text-xs">v{prompt.version}</Badge>
+                          </div>
+                          <p className="text-xs text-muted-foreground line-clamp-1">
+                            {prompt.systemPrompt.substring(0, 80)}...
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
+                          <Button variant="ghost" size="sm" onClick={() => editPromptVersion(prompt)} className="h-8 w-8">
+                            <Edit className="h-3.5 w-3.5" />
+                          </Button>
+                          <Button variant="ghost" size="sm" onClick={() => deletePromptVersion(prompt.id)} className="h-8 w-8">
+                            <Trash2 className="h-3.5 w-3.5 text-destructive" />
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Actions */}
+      <div className="flex flex-col-reverse sm:flex-row gap-3 justify-between">
+        <Button variant="outline" onClick={onBack} className="h-11 border-border/40 hover:bg-muted/50 font-medium bg-transparent">
+          Back
+        </Button>
+        <Button onClick={onComplete} disabled={promptVersions.length === 0} className="h-11 bg-primary hover:bg-primary/90 font-medium">
+          Continue
+        </Button>
+      </div>
+    </div>
   )
 }
