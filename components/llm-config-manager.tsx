@@ -104,17 +104,17 @@ export function LLMConfigManager({ onComplete, onBack }: LLMConfigManagerProps) 
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>LLM Configuration Manager</CardTitle>
-        <CardDescription>Configure LLM settings for each agent in your multi-agent system</CardDescription>
+    <Card className="border-0 shadow-sm">
+      <CardHeader className="px-4 sm:px-6 py-4 sm:py-6">
+        <CardTitle className="text-lg sm:text-xl">LLM Configuration Manager</CardTitle>
+        <CardDescription className="text-sm sm:text-base">Configure LLM settings for each agent in your multi-agent system</CardDescription>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
         {/* Agent Selection */}
         <div className="space-y-2">
-          <Label>Select Agent</Label>
+          <Label className="text-sm font-medium">Select Agent</Label>
           <Select value={selectedAgent} onValueChange={setSelectedAgent}>
-            <SelectTrigger>
+            <SelectTrigger className="h-10 sm:h-11">
               <SelectValue placeholder="Choose an agent to configure" />
             </SelectTrigger>
             <SelectContent>
@@ -128,23 +128,23 @@ export function LLMConfigManager({ onComplete, onBack }: LLMConfigManagerProps) 
         </div>
 
         {selectedAgent && (
-          <Card className="border-dashed">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-lg flex items-center gap-2">
-                <Settings className="h-5 w-5" />
+          <Card className="border-dashed border-2">
+            <CardHeader className="px-4 sm:px-6 py-3 sm:py-4 pb-2 sm:pb-3">
+              <CardTitle className="text-base sm:text-lg flex items-center gap-2">
+                <Settings className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
                 Configure {selectedAgent.replace("_", " ").replace(/\b\w/g, (l) => l.toUpperCase())}
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4">
               {/* Model Selection */}
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div className="space-y-2">
-                  <Label>Model</Label>
+                  <Label className="text-sm font-medium">Model</Label>
                   <Select
                     value={currentConfig.model}
                     onValueChange={(value) => setCurrentConfig({ ...currentConfig, model: value })}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="h-10 sm:h-11">
                       <SelectValue placeholder="Select model" />
                     </SelectTrigger>
                     <SelectContent>
@@ -158,12 +158,12 @@ export function LLMConfigManager({ onComplete, onBack }: LLMConfigManagerProps) 
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Fallback Model</Label>
+                  <Label className="text-sm font-medium">Fallback Model</Label>
                   <Select
                     value={currentConfig.fallbackModel}
                     onValueChange={(value) => setCurrentConfig({ ...currentConfig, fallbackModel: value })}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="h-10 sm:h-11">
                       <SelectValue placeholder="Select fallback model" />
                     </SelectTrigger>
                     <SelectContent>
@@ -178,9 +178,9 @@ export function LLMConfigManager({ onComplete, onBack }: LLMConfigManagerProps) 
               </div>
 
               {/* Numeric Parameters */}
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
                 <div className="space-y-2">
-                  <Label>Temperature</Label>
+                  <Label className="text-sm font-medium">Temperature</Label>
                   <Input
                     type="number"
                     min="0"
@@ -190,22 +190,24 @@ export function LLMConfigManager({ onComplete, onBack }: LLMConfigManagerProps) 
                     onChange={(e) =>
                       setCurrentConfig({ ...currentConfig, temperature: Number.parseFloat(e.target.value) })
                     }
+                    className="h-10 sm:h-11"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Max Tokens</Label>
+                  <Label className="text-sm font-medium">Max Tokens</Label>
                   <Input
                     type="number"
                     min="1"
                     max="8192"
                     value={currentConfig.maxTokens}
                     onChange={(e) => setCurrentConfig({ ...currentConfig, maxTokens: Number.parseInt(e.target.value) })}
+                    className="h-10 sm:h-11"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Max Retries</Label>
+                  <Label className="text-sm font-medium">Max Retries</Label>
                   <Input
                     type="number"
                     min="0"
@@ -214,13 +216,14 @@ export function LLMConfigManager({ onComplete, onBack }: LLMConfigManagerProps) 
                     onChange={(e) =>
                       setCurrentConfig({ ...currentConfig, maxRetries: Number.parseInt(e.target.value) })
                     }
+                    className="h-10 sm:h-11"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
                 <div className="space-y-2">
-                  <Label>Top P</Label>
+                  <Label className="text-sm font-medium">Top P</Label>
                   <Input
                     type="number"
                     min="0"
@@ -228,22 +231,24 @@ export function LLMConfigManager({ onComplete, onBack }: LLMConfigManagerProps) 
                     step="0.1"
                     value={currentConfig.topP}
                     onChange={(e) => setCurrentConfig({ ...currentConfig, topP: Number.parseFloat(e.target.value) })}
+                    className="h-10 sm:h-11"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Top K</Label>
+                  <Label className="text-sm font-medium">Top K</Label>
                   <Input
                     type="number"
                     min="1"
                     max="100"
                     value={currentConfig.topK}
                     onChange={(e) => setCurrentConfig({ ...currentConfig, topK: Number.parseInt(e.target.value) })}
+                    className="h-10 sm:h-11"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Presence Penalty</Label>
+                  <Label className="text-sm font-medium">Presence Penalty</Label>
                   <Input
                     type="number"
                     min="-2"
@@ -253,11 +258,12 @@ export function LLMConfigManager({ onComplete, onBack }: LLMConfigManagerProps) 
                     onChange={(e) =>
                       setCurrentConfig({ ...currentConfig, presencePenalty: Number.parseFloat(e.target.value) })
                     }
+                    className="h-10 sm:h-11"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Frequency Penalty</Label>
+                  <Label className="text-sm font-medium">Frequency Penalty</Label>
                   <Input
                     type="number"
                     min="-2"
@@ -267,32 +273,33 @@ export function LLMConfigManager({ onComplete, onBack }: LLMConfigManagerProps) 
                     onChange={(e) =>
                       setCurrentConfig({ ...currentConfig, frequencyPenalty: Number.parseFloat(e.target.value) })
                     }
+                    className="h-10 sm:h-11"
                   />
                 </div>
               </div>
 
               {/* Boolean Parameters */}
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-2">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center sm:justify-between pt-2">
+                <div className="flex items-center gap-2">
                   <Switch
                     id="structured-output"
                     checked={currentConfig.structuredOutput}
                     onCheckedChange={(checked) => setCurrentConfig({ ...currentConfig, structuredOutput: checked })}
                   />
-                  <Label htmlFor="structured-output">Structured Output (JSON Mode)</Label>
+                  <Label htmlFor="structured-output" className="text-sm font-medium">Structured Output (JSON Mode)</Label>
                 </div>
 
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center gap-2">
                   <Switch
                     id="stream"
                     checked={currentConfig.stream}
                     onCheckedChange={(checked) => setCurrentConfig({ ...currentConfig, stream: checked })}
                   />
-                  <Label htmlFor="stream">Stream</Label>
+                  <Label htmlFor="stream" className="text-sm font-medium">Stream</Label>
                 </div>
               </div>
 
-              <Button onClick={addConfig} disabled={!currentConfig.model} className="w-full">
+              <Button onClick={addConfig} disabled={!currentConfig.model} className="w-full h-10 sm:h-11 mt-2">
                 <Plus className="h-4 w-4 mr-2" />
                 Add Configuration
               </Button>
@@ -302,27 +309,27 @@ export function LLMConfigManager({ onComplete, onBack }: LLMConfigManagerProps) 
 
         {/* Existing Configurations */}
         {configs.length > 0 && (
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4 pt-2">
             <Separator />
             <div>
-              <h3 className="text-lg font-semibold mb-4">Configured Agents ({configs.length})</h3>
-              <div className="space-y-3">
+              <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">Configured Agents ({configs.length})</h3>
+              <div className="space-y-2 sm:space-y-3">
                 {configs.map((config) => (
-                  <Card key={config.id} className="p-4">
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2">
-                          <Badge variant="secondary">{config.agent}</Badge>
-                          <Badge variant="outline">{config.model}</Badge>
+                  <Card key={config.id} className="p-3 sm:p-4 hover:shadow-sm transition-shadow">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4">
+                      <div className="space-y-2 min-w-0 flex-1">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <Badge variant="secondary" className="text-xs sm:text-sm">{config.agent}</Badge>
+                          <Badge variant="outline" className="text-xs sm:text-sm">{config.model}</Badge>
                         </div>
-                        <div className="text-sm text-muted-foreground">
-                          Temp: {config.temperature} | Tokens: {config.maxTokens} |
-                          {config.structuredOutput && " JSON Mode |"}
-                          {config.stream && " Streaming |"}
-                          {config.fallbackModel && ` Fallback: ${config.fallbackModel}`}
+                        <div className="text-xs sm:text-sm text-muted-foreground">
+                          Temp: {config.temperature} | Tokens: {config.maxTokens}
+                          {config.structuredOutput && " | JSON Mode"}
+                          {config.stream && " | Streaming"}
+                          {config.fallbackModel && ` | Fallback: ${config.fallbackModel}`}
                         </div>
                       </div>
-                      <Button variant="ghost" size="sm" onClick={() => removeConfig(config.id)}>
+                      <Button variant="ghost" size="sm" onClick={() => removeConfig(config.id)} className="h-8 w-8 sm:h-9 sm:w-9 flex-shrink-0">
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>
@@ -333,11 +340,11 @@ export function LLMConfigManager({ onComplete, onBack }: LLMConfigManagerProps) 
           </div>
         )}
 
-        <div className="flex justify-between">
-          <Button variant="outline" onClick={onBack}>
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-between pt-2 sm:pt-4">
+          <Button variant="outline" onClick={onBack} className="h-10 sm:h-11 order-2 sm:order-1 bg-transparent">
             Back
           </Button>
-          <Button onClick={onComplete} disabled={configs.length === 0}>
+          <Button onClick={onComplete} disabled={configs.length === 0} className="h-10 sm:h-11 order-1 sm:order-2">
             Continue to Prompt Management ({configs.length} configs)
           </Button>
         </div>

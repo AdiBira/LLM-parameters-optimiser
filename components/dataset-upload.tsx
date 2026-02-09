@@ -69,46 +69,50 @@ export function DatasetUpload({ onComplete, onBack }: DatasetUploadProps) {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Upload Dataset</CardTitle>
-        <CardDescription>
+    <Card className="border-0 shadow-sm">
+      <CardHeader className="px-4 sm:px-6 py-4 sm:py-6">
+        <CardTitle className="text-lg sm:text-xl">Upload Dataset</CardTitle>
+        <CardDescription className="text-sm sm:text-base">
           Upload a CSV, JSON, or Excel file containing input prompts for your experiments
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
         {!uploadedFile ? (
           <div
             {...getRootProps()}
             className={cn(
-              "border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors",
-              isDragActive ? "border-primary bg-primary/5" : "border-border hover:border-primary/50",
+              "border-2 border-dashed rounded-xl p-6 sm:p-8 text-center cursor-pointer transition-all duration-200",
+              isDragActive ? "border-primary bg-primary/5 scale-[1.02]" : "border-border hover:border-primary/50 hover:bg-muted/30",
             )}
           >
             <input {...getInputProps()} />
-            <div className="flex flex-col items-center space-y-4">
-              <Upload className="h-12 w-12 text-muted-foreground" />
+            <div className="flex flex-col items-center gap-3 sm:gap-4">
+              <div className="p-2 sm:p-3 rounded-full bg-muted">
+                <Upload className="h-6 w-6 sm:h-8 sm:w-8 text-muted-foreground" />
+              </div>
               <div>
-                <p className="text-lg font-medium">
+                <p className="text-base sm:text-lg font-semibold text-foreground">
                   {isDragActive ? "Drop your file here" : "Drag & drop your dataset"}
                 </p>
-                <p className="text-sm text-muted-foreground mt-1">or click to browse files (CSV, JSON, XLSX, XLS)</p>
+                <p className="text-xs sm:text-sm text-muted-foreground mt-1">or click to browse files (CSV, JSON, XLSX, XLS)</p>
               </div>
             </div>
           </div>
         ) : (
-          <div className="space-y-4">
-            <div className="flex items-center justify-between p-4 border rounded-lg bg-card">
-              <div className="flex items-center space-x-3">
-                <FileText className="h-8 w-8 text-primary" />
-                <div>
-                  <p className="font-medium">{uploadedFile.name}</p>
-                  <p className="text-sm text-muted-foreground">{formatFileSize(uploadedFile.size)}</p>
+          <div className="space-y-3 sm:space-y-4">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3 sm:p-4 border rounded-lg bg-muted/30">
+              <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+                <div className="flex-shrink-0">
+                  <FileText className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
+                </div>
+                <div className="min-w-0">
+                  <p className="font-medium text-sm sm:text-base truncate">{uploadedFile.name}</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground">{formatFileSize(uploadedFile.size)}</p>
                 </div>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center gap-1 flex-shrink-0">
                 <CheckCircle className="h-5 w-5 text-green-600" />
-                <Button variant="ghost" size="sm" onClick={() => setUploadedFile(null)}>
+                <Button variant="ghost" size="sm" onClick={() => setUploadedFile(null)} className="h-8 w-8 sm:h-9 sm:w-9">
                   <X className="h-4 w-4" />
                 </Button>
               </div>
@@ -116,9 +120,9 @@ export function DatasetUpload({ onComplete, onBack }: DatasetUploadProps) {
 
             {uploadedFile.preview && (
               <div className="space-y-2">
-                <Label>Dataset Preview</Label>
-                <div className="border rounded-lg p-4 bg-muted/50">
-                  <pre className="text-sm text-muted-foreground whitespace-pre-wrap">
+                <Label className="text-sm font-medium">Dataset Preview</Label>
+                <div className="border rounded-lg p-3 sm:p-4 bg-muted/50 overflow-x-auto">
+                  <pre className="text-xs sm:text-sm text-muted-foreground whitespace-pre-wrap break-words">
                     {uploadedFile.preview.join("\n")}
                   </pre>
                 </div>
@@ -128,19 +132,19 @@ export function DatasetUpload({ onComplete, onBack }: DatasetUploadProps) {
         )}
 
         {isProcessing && (
-          <div className="flex items-center justify-center p-8">
-            <div className="flex items-center space-x-2">
-              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
-              <span className="text-sm text-muted-foreground">Processing file...</span>
+          <div className="flex items-center justify-center p-6 sm:p-8">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="animate-spin rounded-full h-5 w-5 sm:h-6 sm:w-6 border-2 border-primary border-t-transparent"></div>
+              <span className="text-xs sm:text-sm text-muted-foreground">Processing file...</span>
             </div>
           </div>
         )}
 
-        <div className="flex justify-between">
-          <Button variant="outline" onClick={onBack}>
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-between pt-2 sm:pt-4">
+          <Button variant="outline" onClick={onBack} className="h-10 sm:h-11 bg-transparent">
             Back
           </Button>
-          <Button onClick={onComplete} disabled={!uploadedFile || isProcessing}>
+          <Button onClick={onComplete} disabled={!uploadedFile || isProcessing} className="h-10 sm:h-11">
             Continue to LLM Configuration
           </Button>
         </div>

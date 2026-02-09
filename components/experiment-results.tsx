@@ -131,40 +131,49 @@ export function ExperimentResults({ experimentTitle, onBack }: ExperimentResults
   )
 
   return (
-    <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>Experiment: {experimentTitle}</CardTitle>
-          <CardDescription>
+    <div className="space-y-4 sm:space-y-6">
+      <Card className="border-0 shadow-sm">
+        <CardHeader className="px-4 sm:px-6 py-4 sm:py-6">
+          <CardTitle className="text-lg sm:text-xl">Experiment: {experimentTitle}</CardTitle>
+          <CardDescription className="text-sm sm:text-base">
             Run experiments across different LLM configurations and prompt versions, then evaluate results
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
+        <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4 sm:space-y-6">
           {/* Experiment Overview */}
-          <div className="grid grid-cols-4 gap-4">
-            <Card className="p-4">
-              <div className="flex items-center space-x-2">
-                <Target className="h-5 w-5 text-primary" />
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
+            <Card className="p-3 sm:p-4 hover:shadow-sm transition-shadow">
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Target className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+                  <span className="text-xs sm:text-sm">Total</span>
+                </div>
                 <div>
-                  <p className="text-2xl font-bold">{experiments.length}</p>
-                  <p className="text-sm text-muted-foreground">Total Experiments</p>
+                  <p className="text-xl sm:text-2xl font-bold">{experiments.length}</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground">Experiments</p>
                 </div>
               </div>
             </Card>
-            <Card className="p-4">
-              <div className="flex items-center space-x-2">
-                <BarChart3 className="h-5 w-5 text-green-600" />
+            <Card className="p-3 sm:p-4 hover:shadow-sm transition-shadow">
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-2 text-green-600">
+                  <BarChart3 className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+                  <span className="text-xs sm:text-sm">Completed</span>
+                </div>
                 <div>
-                  <p className="text-2xl font-bold">{completedExperiments.length}</p>
-                  <p className="text-sm text-muted-foreground">Completed</p>
+                  <p className="text-xl sm:text-2xl font-bold">{completedExperiments.length}</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground">Results</p>
                 </div>
               </div>
             </Card>
-            <Card className="p-4">
-              <div className="flex items-center space-x-2">
-                <Clock className="h-5 w-5 text-blue-600" />
+            <Card className="p-3 sm:p-4 hover:shadow-sm transition-shadow">
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-2 text-blue-600">
+                  <Clock className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+                  <span className="text-xs sm:text-sm">Avg Latency</span>
+                </div>
                 <div>
-                  <p className="text-2xl font-bold">
+                  <p className="text-xl sm:text-2xl font-bold">
                     {completedExperiments.length > 0
                       ? Math.round(
                           completedExperiments.reduce((sum, exp) => sum + (exp.results?.avgLatency || 0), 0) /
@@ -173,35 +182,38 @@ export function ExperimentResults({ experimentTitle, onBack }: ExperimentResults
                       : 0}
                     s
                   </p>
-                  <p className="text-sm text-muted-foreground">Avg Latency</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground">average</p>
                 </div>
               </div>
             </Card>
-            <Card className="p-4">
-              <div className="flex items-center space-x-2">
-                <Zap className="h-5 w-5 text-purple-600" />
+            <Card className="p-3 sm:p-4 hover:shadow-sm transition-shadow">
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-2 text-purple-600">
+                  <Zap className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+                  <span className="text-xs sm:text-sm">Best Score</span>
+                </div>
                 <div>
-                  <p className="text-2xl font-bold">
+                  <p className="text-xl sm:text-2xl font-bold">
                     {bestExperiment?.results ? bestExperiment.results.avgEvalScore.toFixed(1) : "N/A"}
                   </p>
-                  <p className="text-sm text-muted-foreground">Best Score</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground">performance</p>
                 </div>
               </div>
             </Card>
           </div>
 
           {/* Evaluation Setup */}
-          <Card className="border-dashed">
-            <CardHeader>
-              <CardTitle className="text-lg">Evaluation Setup</CardTitle>
-              <CardDescription>Configure how you want to evaluate the experiment results</CardDescription>
+          <Card className="border-dashed border-2">
+            <CardHeader className="px-4 sm:px-6 py-3 sm:py-4 pb-2 sm:pb-3">
+              <CardTitle className="text-base sm:text-lg">Evaluation Setup</CardTitle>
+              <CardDescription className="text-xs sm:text-sm">Configure how you want to evaluate the experiment results</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+            <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Evaluation Type</label>
                   <Select value={evalType} onValueChange={setEvalType}>
-                    <SelectTrigger>
+                    <SelectTrigger className="h-10 sm:h-11">
                       <SelectValue placeholder="Select evaluation type" />
                     </SelectTrigger>
                     <SelectContent>
@@ -216,7 +228,7 @@ export function ExperimentResults({ experimentTitle, onBack }: ExperimentResults
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Evaluation Method</label>
                   <Select value={evalMethod} onValueChange={setEvalMethod}>
-                    <SelectTrigger>
+                    <SelectTrigger className="h-10 sm:h-11">
                       <SelectValue placeholder="Select evaluation method" />
                     </SelectTrigger>
                     <SelectContent>
@@ -231,47 +243,47 @@ export function ExperimentResults({ experimentTitle, onBack }: ExperimentResults
           </Card>
 
           {/* Experiment List */}
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold">Experiment Combinations</h3>
-              <div className="flex gap-2">
-                <Button variant="outline" size="sm">
+          <div className="space-y-3 sm:space-y-4">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+              <h3 className="text-base sm:text-lg font-semibold">Experiment Combinations</h3>
+              <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                <Button variant="outline" size="sm" className="h-9 text-xs sm:text-sm bg-transparent">
                   <Download className="h-4 w-4 mr-2" />
                   Export Results
                 </Button>
-                <Button onClick={runExperiments} disabled={isRunning}>
+                <Button onClick={runExperiments} disabled={isRunning} size="sm" className="h-9 text-xs sm:text-sm">
                   <Play className="h-4 w-4 mr-2" />
                   {isRunning ? "Running..." : "Run All Experiments"}
                 </Button>
               </div>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-2 sm:space-y-3">
               {experiments.map((experiment) => (
-                <Card key={experiment.id} className="p-4">
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2">
-                          <Badge variant="secondary">{experiment.configVersion}</Badge>
-                          <Badge variant="outline">{experiment.promptVersion}</Badge>
+                <Card key={experiment.id} className="p-3 sm:p-4 hover:shadow-sm transition-shadow">
+                  <div className="space-y-2 sm:space-y-3">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4">
+                      <div className="space-y-1.5 min-w-0 flex-1">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <Badge variant="secondary" className="text-xs sm:text-sm truncate">{experiment.configVersion}</Badge>
+                          <Badge variant="outline" className="text-xs sm:text-sm">{experiment.promptVersion}</Badge>
                         </div>
                         <div className="flex items-center gap-2">
                           <div className={`w-2 h-2 rounded-full ${getStatusColor(experiment.status)}`} />
-                          <span className="text-sm capitalize">{experiment.status}</span>
+                          <span className="text-xs sm:text-sm capitalize">{experiment.status}</span>
                         </div>
                       </div>
                       {experiment.results && (
-                        <div className="text-right">
-                          <p className="text-lg font-semibold">{experiment.results.avgEvalScore.toFixed(1)}</p>
+                        <div className="text-right flex-shrink-0">
+                          <p className="text-lg sm:text-xl font-semibold">{experiment.results.avgEvalScore.toFixed(1)}</p>
                           <p className="text-xs text-muted-foreground">Eval Score</p>
                         </div>
                       )}
                     </div>
 
                     {experiment.status === "running" && (
-                      <div className="space-y-1">
-                        <div className="flex justify-between text-sm">
+                      <div className="space-y-1.5">
+                        <div className="flex justify-between text-xs sm:text-sm">
                           <span>Progress</span>
                           <span>{experiment.progress}%</span>
                         </div>
@@ -280,7 +292,7 @@ export function ExperimentResults({ experimentTitle, onBack }: ExperimentResults
                     )}
 
                     {experiment.results && (
-                      <div className="grid grid-cols-4 gap-4 text-sm">
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 text-xs sm:text-sm">
                         <div>
                           <p className="text-muted-foreground">TTFT</p>
                           <p className="font-medium">{experiment.results.avgTTFT}s</p>
@@ -305,11 +317,11 @@ export function ExperimentResults({ experimentTitle, onBack }: ExperimentResults
             </div>
           </div>
 
-          <div className="flex justify-between">
-            <Button variant="outline" onClick={onBack}>
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-between pt-2 sm:pt-4">
+            <Button variant="outline" onClick={onBack} className="h-10 sm:h-11 order-2 sm:order-1 bg-transparent">
               Back
             </Button>
-            <Button disabled={completedExperiments.length === 0}>
+            <Button disabled={completedExperiments.length === 0} className="h-10 sm:h-11 order-1 sm:order-2">
               View Detailed Analysis ({completedExperiments.length} completed)
             </Button>
           </div>
